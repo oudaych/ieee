@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IEEE Club — Membership Form</title>
+  <style>
+    :root{--accent:#0b5ed7;--bg:#f6f8fb;--card:#ffffff}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;margin:0;background:var(--bg);color:#111}
+    .container{max-width:980px;margin:36px auto;padding:24px}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .logo{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#082a5f);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:6px 0 0;color:#444}
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(12,24,60,0.06)}
+    form .row{display:flex;gap:12px}
+    label{display:block;font-size:13px;margin-bottom:6px;color:#333}
+    input, select, textarea{
+      width:100%;padding:10px;border:1px solid #d8e1ef;border-radius:8px;font-size:14px;background:#fff;box-sizing:border-box;
+    }
+    textarea{min-height:100px;resize:vertical}
+    .field{margin-bottom:14px}
+    .btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;border:0;cursor:pointer;font-weight:600}
+    .foot{margin-top:12px;font-size:13px;color:#666}
+    .muted{color:#777;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">IEEE</div>
+      <div>
+        <h1>IEEE Club — Membership Form</h1>
+        <p class="lead">Join IEEE — submit your details and get a confirmation email to the club.</p>
+      </div>
+    </header>
+
+    <div class="card">
+      <form id="ieeeForm">
+        <div class="field">
+          <label for="fullname">Full name *</label>
+          <input id="fullname" name="fullname" type="text" required placeholder="e.g. Mohamed Ali" />
+        </div>
+
+        <div class="field">
+          <label for="email">Email *</label>
+          <input id="email" name="email" type="email" required placeholder="name@pi.tn" />
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" placeholder="+216 xxx xxx xxx" />
+        </div>
+
+        <div class="field">
+          <label for="studentId">Student ID / Roll</label>
+          <input id="studentId" name="studentId" type="text" placeholder="12345" />
+        </div>
+
+        <div class="field">
+          <label for="branch">Department / Branch</label>
+          <input id="branch" name="branch" type="text" placeholder="licence / cycle prepa / Mechatronics..." />
+        </div>
+
+        <div class="field">
+          <label for="year">Year</label>
+          <select id="year" name="year">
+            <option value="">--</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="interests">Areas of interest</label>
+          <textarea id="interests" name="interests" placeholder="AI, robotics, embedded systems, competitions..."></textarea>
+        </div>
+
+        <button type="submit" class="btn">Submit</button>
+        <p id="status" class="muted"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Include EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    // Initialize EmailJS
+    emailjs.init("U0ESLrbXj3W_dXUoz"); // 🔹 Replace with your EmailJS Public Key
+
+    const form = document.getElementById("ieeeForm");
+    const status = document.getElementById("status");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      // Send the form using EmailJS
+      emailjs.send("service_ieee", "template_ieee", {
+        fullname: form.fullname.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        studentId: form.studentId.value,
+        branch: form.branch.value,
+        year: form.year.value,
+        interests: form.interests.value
+      })
+      .then(() => {
+        status.textContent = "✅ Submitted! The information has been sent to your email.";
+        form.reset();
+      }, (error) => {
+        console.error(error);
+        status.textContent = "❌ Error sending the email. Check console for details.";
+      });
+    });
+  </script>
+</body>
+</html>
